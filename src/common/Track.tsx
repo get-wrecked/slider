@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Track = props => {
-  const { className, included, vertical, style } = props;
+  const { className, included, vertical, style, onMouseDown } = props;
   let { length, offset, reverse } = props;
   if (length < 0) {
     reverse = !reverse;
@@ -25,7 +25,7 @@ const Track = props => {
     ...style,
     ...positonStyle,
   };
-  return included ? <div className={className} style={elStyle} /> : null;
+  return included ? <div onMouseDown={onMouseDown} className={className} style={elStyle} /> : null;
 };
 
 export default Track;

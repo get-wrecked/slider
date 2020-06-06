@@ -14,6 +14,8 @@ export interface SliderProps {
   onChange?: (value: number) => void;
   onBeforeChange?: (value: number) => void;
   onAfterChange?: (value: number) => void;
+  onHandleMouseDown?: React.MouseEventHandler;
+  onTrackMouseDown?: React.MouseEventHandler;
   vertical?: boolean;
   included?: boolean;
   disabled?: boolean;
@@ -44,6 +46,7 @@ export interface SliderProps {
     ariaValueTextFormatter: string;
     style?: React.CSSProperties;
     ref?: React.Ref<any>;
+    onMouseDown?: React.MouseEventHandler;
   }) => React.ReactElement;
 }
 export interface SliderState {
@@ -217,6 +220,8 @@ class Slider extends React.Component<SliderProps, SliderState> {
       startPoint,
       reverse,
       handle: handleGenerator,
+      onHandleMouseDown,
+      onTrackMouseDown,
     } = this.props;
     const { value, dragging } = this.state;
     const offset = this.calcOffset(value);
@@ -238,6 +243,7 @@ class Slider extends React.Component<SliderProps, SliderState> {
       ariaValueTextFormatter: ariaValueTextFormatterForHandle,
       style: handleStyle[0] || handleStyle,
       ref: h => this.saveHandle(0, h),
+      onMouseDown: onHandleMouseDown,
     });
 
     const trackOffset = startPoint !== undefined ? this.calcOffset(startPoint) : 0;
@@ -250,6 +256,7 @@ class Slider extends React.Component<SliderProps, SliderState> {
         offset={trackOffset}
         reverse={reverse}
         length={offset - trackOffset}
+        onMouseDown={onTrackMouseDown}
         style={{
           ...minimumTrackStyle,
           ...mergedTrackStyle,

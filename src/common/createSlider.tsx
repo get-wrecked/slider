@@ -33,6 +33,11 @@ export default function createSlider(Component) {
       onBeforeChange: noop,
       onChange: noop,
       onAfterChange: noop,
+      onHandleMouseDown: noop,
+      onTrackMouseDown: noop,
+      onRailMouseDown: noop,
+      onSnapToPosition: noop,
+      snapToPosition: true,
       included: true,
       disabled: false,
       dots: false,
@@ -77,18 +82,51 @@ export default function createSlider(Component) {
         return;
       }
 
+      // check for event interception
+      if (this.props.onMouseDown) {
+        this.props.onMouseDown(e);
+      }
+
+      // check if the slider is vertical
       const isVertical = this.props.vertical;
+
+      // get the slider position related to the mouse
       let position = utils.getMousePosition(isVertical, e);
+
+      // update position
+      let updatePosition = true;
+
+      // check if the event came from a slider handle
       if (!utils.isEventFromHandle(e, this.handlesRefs)) {
-        this.dragOffset = 0;
+        // it did not, reset drag offset if we are snapping to
+        if (this.props.snapToPosition !== false) {
+          this.dragOffset = 0;
+        } else {
+          // we are disabling snap-to, don't update position
+          updatePosition = false;
+        }
       } else {
+        // event came from a slider handle, continue as normal
         const handlePosition = utils.getHandleCenterPosition(isVertical, e.target);
         this.dragOffset = position - handlePosition;
         position = handlePosition;
       }
-      this.removeDocumentEvents();
-      this.onStart(position);
-      this.addDocumentMouseEvents();
+
+      // check if we have a callback
+      if (this.props.onSnapToPosition) {
+        this.props.onSnapToPosition(
+          position,
+          this.calcValueByPos ? this.calcValueByPos(position) : null,
+        );
+      }
+
+      // check if we even need to update the position
+      if (updatePosition) {
+        // do the document stuff
+        this.removeDocumentEvents();
+        this.onStart(position);
+        this.addDocumentMouseEvents();
+      }
     };
 
     onTouchStart = e => {
@@ -130,7 +168,7 @@ export default function createSlider(Component) {
     };
 
     onMouseUp = () => {
-      if (this.handlesRefs[this.prevMovedHandleIndex]) {
+      if (this.handlesRefs[this.prevMovedHandleIndex] && this.props.snapToPosition !== false) {
         this.handlesRefs[this.prevMovedHandleIndex].clickFocus();
       }
     };
@@ -270,6 +308,7 @@ export default function createSlider(Component) {
         railStyle,
         dotStyle,
         activeDotStyle,
+        onRailMouseDown,
       } = this.props;
       const { tracks, handles } = super.render();
 
@@ -297,6 +336,7 @@ export default function createSlider(Component) {
               ...maximumTrackStyle,
               ...railStyle,
             }}
+            onMouseDown={onRailMouseDown}
           />
           {tracks}
           <Steps

@@ -43,6 +43,8 @@ export interface RangeProps {
   onChange?: (value: number[]) => void;
   onBeforeChange?: (value: number[]) => void;
   onAfterChange?: (value: number[]) => void;
+  onTrackMouseDown?: React.MouseEventHandler;
+  onHandleMouseDown?: React.MouseEventHandler;
   reverse?: boolean;
   vertical?: boolean;
   marks?: Record<number, React.ReactNode | { style?: React.CSSProperties; label?: string }>;
@@ -452,6 +454,8 @@ class Range extends React.Component<RangeProps, RangeState> {
       trackStyle,
       handleStyle,
       tabIndex,
+      onTrackMouseDown,
+      onHandleMouseDown,
       ariaLabelGroupForHandles,
       ariaLabelledByGroupForHandles,
       ariaValueTextFormatterGroupForHandles,
@@ -488,6 +492,7 @@ class Range extends React.Component<RangeProps, RangeState> {
         ariaLabel: ariaLabelGroupForHandles[i],
         ariaLabelledBy: ariaLabelledByGroupForHandles[i],
         ariaValueTextFormatter: ariaValueTextFormatterGroupForHandles[i],
+        onMouseDown: onHandleMouseDown,
       });
     });
 
@@ -505,6 +510,7 @@ class Range extends React.Component<RangeProps, RangeState> {
           included={included}
           offset={offsets[i - 1]}
           length={offsets[i] - offsets[i - 1]}
+          onMouseDown={onTrackMouseDown}
           style={trackStyle[index]}
           key={i}
         />

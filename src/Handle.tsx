@@ -19,6 +19,7 @@ export interface HandleProps {
   ariaValueTextFormatter?: (val: number) => string;
   onMouseEnter?: React.MouseEventHandler;
   onMouseLeave?: React.MouseEventHandler;
+  onMouseDown?: React.MouseEventHandler;
 }
 
 export default class Handle extends React.Component<HandleProps> {
@@ -56,7 +57,12 @@ export default class Handle extends React.Component<HandleProps> {
     }
   };
 
-  handleMouseDown = () => {
+  handleMouseDown = e => {
+    // check for event interception
+    if (this.props.onMouseDown) {
+      this.props.onMouseDown(e);
+    }
+
     // fix https://github.com/ant-design/ant-design/issues/15324
     this.focus();
   };
