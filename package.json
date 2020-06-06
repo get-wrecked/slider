@@ -2,6 +2,9 @@
   "name": "rc-slider",
   "version": "9.3.0",
   "description": "Slider UI component for React",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "engines": {
     "node": ">=8.x"
   },
