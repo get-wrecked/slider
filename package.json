@@ -16,13 +16,13 @@
     "input",
     "range"
   ],
-  "homepage": "http://github.com/react-component/slider/",
+  "homepage": "http://github.com/get-wrecked/slider/",
   "repository": {
     "type": "git",
-    "url": "git@github.com:react-component/slider.git"
+    "url": "git@github.com:get-wrecked/slider.git"
   },
   "bugs": {
-    "url": "http://github.com/react-component/slider/issues"
+    "url": "http://github.com/get-wrecked/slider/issues"
   },
   "files": [
     "assets/*.css",
