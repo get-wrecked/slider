@@ -1,6 +1,6 @@
 {
-  "name": "rc-slider",
-  "version": "9.3.1",
+  "name": "@get-wrecked/slider",
+  "version": "9.4.0-alpha1",
   "description": "Slider UI component for React",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
@@ -39,8 +39,6 @@
     "build": "father doc build --storybook",
     "compile": "father build && lessc assets/index.less assets/index.css",
     "gh-pages": "npm run build && father doc deploy",
-    "prepublishOnly": "npm run compile && np --yolo --no-publish",
-    "postpublish": "npm run gh-pages",
     "lint": "eslint src/ --ext .ts,.tsx,.jsx,.js,.md",
     "prettier": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "test": "father test",
